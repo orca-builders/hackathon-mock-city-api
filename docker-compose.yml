@@ -7,52 +7,88 @@ services:
       - ./gateway/nginx.conf:/etc/nginx/conf.d/default.conf:ro
       - ./gateway/index.html:/usr/share/nginx/html/index.html:ro
     depends_on:
-      - hotel
-      - restaurant
-      - flight
-      - car-rental
-      - tour-guide
-      - museum
+      - hotel-1
+      - hotel-2
+      - restaurant-1
+      - restaurant-2
+      - restaurant-3
+      - flight-1
+      - car-rental-1
+      - tour-guide-1
+      - museum-1
     restart: unless-stopped
 
-  hotel:
+  # ── Hotel (2 instances) ──────────────────────────────────────────────
+
+  hotel-1:
     build:
       context: ./Hotel
       args:
-        BASE_PATH: /hotel/
+        BASE_PATH: /hotel-1/
     restart: unless-stopped
 
-  restaurant:
+  hotel-2:
+    build:
+      context: ./Hotel
+      args:
+        BASE_PATH: /hotel-2/
+    restart: unless-stopped
+
+  # ── Restaurant (3 instances) ─────────────────────────────────────────
+
+  restaurant-1:
     build:
       context: ./Resturant
       args:
-        BASE_PATH: /restaurant/
+        BASE_PATH: /restaurant-1/
     restart: unless-stopped
 
-  flight:
+  restaurant-2:
+    build:
+      context: ./Resturant
+      args:
+        BASE_PATH: /restaurant-2/
+    restart: unless-stopped
+
+  restaurant-3:
+    build:
+      context: ./Resturant
+      args:
+        BASE_PATH: /restaurant-3/
+    restart: unless-stopped
+
+  # ── Flight (1 instance) ─────────────────────────────────────────────
+
+  flight-1:
     build:
       context: ./Flight
       args:
-        BASE_PATH: /flight/
+        BASE_PATH: /flight-1/
     restart: unless-stopped
 
-  car-rental:
+  # ── Car Rental (1 instance) ─────────────────────────────────────────
+
+  car-rental-1:
     build:
       context: ./CarRental
       args:
-        BASE_PATH: /car-rental/
+        BASE_PATH: /car-rental-1/
     restart: unless-stopped
 
-  tour-guide:
+  # ── Tour Guide (1 instance) ─────────────────────────────────────────
+
+  tour-guide-1:
     build:
       context: ./TourGuide
       args:
-        BASE_PATH: /tour-guide/
+        BASE_PATH: /tour-guide-1/
     restart: unless-stopped
 
-  museum:
+  # ── Museum (1 instance) ─────────────────────────────────────────────
+
+  museum-1:
     build:
       context: ./Museum
       args:
-        BASE_PATH: /museum/
+        BASE_PATH: /museum-1/
     restart: unless-stopped
