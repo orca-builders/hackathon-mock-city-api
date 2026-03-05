@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 
-const API = '/api'
+const API = `${import.meta.env.BASE_URL}api`.replace('//', '/')
 
 function StatusBadge({ status }) {
   return <span className={`badge ${status}`}>{status}</span>

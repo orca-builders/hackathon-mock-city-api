@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mock APIs — Hackathon Services</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "Inter", sans-serif; background: #f8fafc; color: #1a1a2e; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .container { max-width: 720px; width: 100%; padding: 2rem; }
+    h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .subtitle { color: #6b7280; margin-bottom: 2rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+    .card { background: #fff; border-radius: 12px; padding: 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,0.08); text-decoration: none; color: inherit; transition: transform 0.15s, box-shadow 0.15s; border-left: 4px solid var(--accent); }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
+    .card h2 { font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .card p { font-size: 0.82rem; color: #6b7280; }
+    .card code { display: block; margin-top: 0.5rem; font-size: 0.75rem; color: #9ca3af; }
+    .footer { margin-top: 2rem; text-align: center; font-size: 0.8rem; color: #9ca3af; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Hackathon Mock APIs</h1>
+    <p class="subtitle">All services on one gateway. Click to open a dashboard, or hit <code>/&lt;service&gt;/api/schema</code> for the LLM manifest.</p>
+    <div class="grid">
+      <a class="card" href="/hotel/" style="--accent: #6366f1;">
+        <h2>Hotel</h2>
+        <p>Room reservations, pricing by date range</p>
+        <code>/hotel/api/</code>
+      </a>
+      <a class="card" href="/restaurant/" style="--accent: #f59e0b;">
+        <h2>Restaurant</h2>
+        <p>Table reservations, time slots, party size</p>
+        <code>/restaurant/api/</code>
+      </a>
+      <a class="card" href="/flight/" style="--accent: #0ea5e9;">
+        <h2>Flight</h2>
+        <p>Flight bookings, seat classes, routes</p>
+        <code>/flight/api/</code>
+      </a>
+      <a class="card" href="/car-rental/" style="--accent: #22c55e;">
+        <h2>Car Rental</h2>
+        <p>Vehicle rentals by category and date range</p>
+        <code>/car-rental/api/</code>
+      </a>
+      <a class="card" href="/tour-guide/" style="--accent: #7c3aed;">
+        <h2>Tour Guide</h2>
+        <p>Tour bookings by category, difficulty, date</p>
+        <code>/tour-guide/api/</code>
+      </a>
+      <a class="card" href="/museum/" style="--accent: #e11d48;">
+        <h2>Museum</h2>
+        <p>Timed-entry tickets, visitor capacity</p>
+        <code>/museum/api/</code>
+      </a>
+    </div>
+    <div class="footer">Each service exposes <code>GET /&lt;service&gt;/api/schema</code> for LLM agent self-discovery.</div>
+  </div>
+</body>
+</html>

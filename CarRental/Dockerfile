@@ -3,7 +3,8 @@ WORKDIR /build
 COPY frontend/package*.json ./
 RUN npm ci
 COPY frontend/ ./
-RUN npm run build
+ARG BASE_PATH=/
+RUN npm run build -- --base=$BASE_PATH
 
 FROM python:3.12-slim
 WORKDIR /app
