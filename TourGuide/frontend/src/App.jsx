@@ -1,6 +1,9 @@
 import { useState, useEffect, useCallback } from 'react'
 
 const API = `${import.meta.env.BASE_URL}api`.replace('//', '/')
+const API_KEY = new URLSearchParams(window.location.search).get('api_key') || ''
+const authHeaders = API_KEY ? { 'X-API-Key': API_KEY } : {}
+const apiFetch = (url, opts = {}) => fetch(url, { ...opts, headers: { ...authHeaders, ...opts.headers } })
 
 function formatMoney(n) {
   return `$${Number(n).toFixed(2)}`
@@ -64,7 +67,7 @@ function ToursCatalog({ tours }) {
 function BookingsPanel({ bookings, onRefresh }) {
   const cancel = async (id) => {
     if (!confirm('Cancel this booking?')) return
-    await fetch(`${API}/bookings/${id}`, { method: 'DELETE' })
+    await apiFetch(`${API}/bookings/${id}`, { method: 'DELETE' })
     onRefresh()
   }
 
@@ -155,7 +158,7 @@ function BookingForm({ tours, categories, onBooked }) {
       tour_id: form.tour_id,
       guests: String(form.num_guests),
     })
-    fetch(`${API}/pricing?${params}`)
+    apiFetch(`${API}/pricing?${params}`)
       .then((r) => r.ok ? r.json() : null)
       .then(setPricing)
       .catch(() => setPricing(null))
@@ -171,7 +174,7 @@ function BookingForm({ tours, categories, onBooked }) {
       date: form.tour_date,
       guests: String(form.num_guests),
     })
-    fetch(`${API}/tours/available?${params}`)
+    apiFetch(`${API}/tours/available?${params}`)
       .then((r) => r.ok ? r.json() : null)
       .then(setAvailability)
       .catch(() => setAvailability(null))
@@ -182,7 +185,7 @@ function BookingForm({ tours, categories, onBooked }) {
     setLoading(true)
     setError(null)
     try {
-      const res = await fetch(`${API}/bookings`, {
+      const res = await apiFetch(`${API}/bookings`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -289,15 +292,15 @@ export default function App() {
   const [categories, setCategories] = useState([])
 
   const fetchTours = useCallback(() => {
-    fetch(`${API}/tours`).then((r) => r.json()).then(setTours).catch(() => {})
+    apiFetch(`${API}/tours`).then((r) => r.json()).then(setTours).catch(() => {})
   }, [])
 
   const fetchBookings = useCallback(() => {
-    fetch(`${API}/bookings`).then((r) => r.json()).then(setBookings).catch(() => {})
+    apiFetch(`${API}/bookings`).then((r) => r.json()).then(setBookings).catch(() => {})
   }, [])
 
   const fetchCategories = useCallback(() => {
-    fetch(`${API}/categories`).then((r) => r.json()).then(setCategories).catch(() => {})
+    apiFetch(`${API}/categories`).then((r) => r.json()).then(setCategories).catch(() => {})
   }, [])
 
   useEffect(() => {

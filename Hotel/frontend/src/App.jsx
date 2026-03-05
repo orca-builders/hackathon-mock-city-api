@@ -1,6 +1,9 @@
 import { useState, useEffect, useCallback } from 'react'
 
 const API = `${import.meta.env.BASE_URL}api`.replace('//', '/')
+const API_KEY = new URLSearchParams(window.location.search).get('api_key') || ''
+const authHeaders = API_KEY ? { 'X-API-Key': API_KEY } : {}
+const apiFetch = (url, opts = {}) => fetch(url, { ...opts, headers: { ...authHeaders, ...opts.headers } })
 
 function formatDate(d) {
   if (!d) return '—'
@@ -54,7 +57,7 @@ function RoomsPanel({ rooms }) {
 function ReservationsPanel({ reservations, onRefresh }) {
   const cancel = async (id) => {
     if (!confirm('Cancel this reservation?')) return
-    await fetch(`${API}/reservations/${id}`, { method: 'DELETE' })
+    await apiFetch(`${API}/reservations/${id}`, { method: 'DELETE' })
     onRefresh()
   }
 
@@ -144,7 +147,7 @@ function BookingForm({ rooms, onBooked }) {
       check_in: form.check_in,
       check_out: form.check_out,
     })
-    fetch(`${API}/pricing?${params}`)
+    apiFetch(`${API}/pricing?${params}`)
       .then((r) => r.ok ? r.json() : null)
       .then(setPricing)
       .catch(() => setPricing(null))
@@ -155,7 +158,7 @@ function BookingForm({ rooms, onBooked }) {
     setLoading(true)
     setError(null)
     try {
-      const res = await fetch(`${API}/reservations`, {
+      const res = await apiFetch(`${API}/reservations`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...form, room_id: Number(form.room_id), num_guests: Number(form.num_guests) }),
@@ -239,11 +242,11 @@ export default function App() {
   const [reservations, setReservations] = useState([])
 
   const fetchRooms = useCallback(() => {
-    fetch(`${API}/rooms`).then((r) => r.json()).then(setRooms).catch(() => {})
+    apiFetch(`${API}/rooms`).then((r) => r.json()).then(setRooms).catch(() => {})
   }, [])
 
   const fetchReservations = useCallback(() => {
-    fetch(`${API}/reservations`).then((r) => r.json()).then(setReservations).catch(() => {})
+    apiFetch(`${API}/reservations`).then((r) => r.json()).then(setReservations).catch(() => {})
   }, [])
 
   useEffect(() => {

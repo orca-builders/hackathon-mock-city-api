@@ -1,6 +1,9 @@
 import { useState, useEffect, useCallback } from 'react'
 
 const API = `${import.meta.env.BASE_URL}api`.replace('//', '/')
+const API_KEY = new URLSearchParams(window.location.search).get('api_key') || ''
+const authHeaders = API_KEY ? { 'X-API-Key': API_KEY } : {}
+const apiFetch = (url, opts = {}) => fetch(url, { ...opts, headers: { ...authHeaders, ...opts.headers } })
 
 function formatMoney(n) {
   return `$${Number(n).toFixed(2)}`
@@ -53,7 +56,7 @@ function FleetPanel({ vehicles }) {
 function RentalsPanel({ rentals, onRefresh }) {
   const cancel = async (id) => {
     if (!confirm('Cancel this rental?')) return
-    await fetch(`${API}/rentals/${id}`, { method: 'DELETE' })
+    await apiFetch(`${API}/rentals/${id}`, { method: 'DELETE' })
     onRefresh()
   }
 
@@ -145,7 +148,7 @@ function RentForm({ vehicles, categories, onRented }) {
       return_date: form.return_date,
       ...(form.category ? { category: form.category } : {}),
     })
-    fetch(`${API}/vehicles/available?${params}`)
+    apiFetch(`${API}/vehicles/available?${params}`)
       .then((r) => r.ok ? r.json() : [])
       .then((data) => {
         setAvailableVehicles(data)
@@ -164,7 +167,7 @@ function RentForm({ vehicles, categories, onRented }) {
       pickup_date: form.pickup_date,
       return_date: form.return_date,
     })
-    fetch(`${API}/pricing?${params}`)
+    apiFetch(`${API}/pricing?${params}`)
       .then((r) => r.ok ? r.json() : null)
       .then(setPricing)
       .catch(() => setPricing(null))
@@ -177,7 +180,7 @@ function RentForm({ vehicles, categories, onRented }) {
     setLoading(true)
     setError(null)
     try {
-      const res = await fetch(`${API}/rentals`, {
+      const res = await apiFetch(`${API}/rentals`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -285,15 +288,15 @@ export default function App() {
   const [categories, setCategories] = useState([])
 
   const fetchVehicles = useCallback(() => {
-    fetch(`${API}/vehicles`).then((r) => r.json()).then(setVehicles).catch(() => {})
+    apiFetch(`${API}/vehicles`).then((r) => r.json()).then(setVehicles).catch(() => {})
   }, [])
 
   const fetchRentals = useCallback(() => {
-    fetch(`${API}/rentals`).then((r) => r.json()).then(setRentals).catch(() => {})
+    apiFetch(`${API}/rentals`).then((r) => r.json()).then(setRentals).catch(() => {})
   }, [])
 
   const fetchCategories = useCallback(() => {
-    fetch(`${API}/categories`).then((r) => r.json()).then(setCategories).catch(() => {})
+    apiFetch(`${API}/categories`).then((r) => r.json()).then(setCategories).catch(() => {})
   }, [])
 
   useEffect(() => {

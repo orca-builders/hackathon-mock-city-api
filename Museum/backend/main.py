@@ -5,8 +5,9 @@ import os
 from contextlib import asynccontextmanager
 from typing import Optional
 
-from fastapi import FastAPI, HTTPException, Depends, Query
+from fastapi import FastAPI, HTTPException, Depends, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from sqlalchemy import (
@@ -207,6 +208,20 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+API_KEY = os.environ.get("API_KEY")
+
+
+@app.middleware("http")
+async def check_api_key(request: Request, call_next):
+    if API_KEY and request.url.path.startswith("/api/"):
+        key = request.headers.get("X-API-Key") or request.query_params.get("api_key")
+        if key != API_KEY:
+            return JSONResponse(
+                status_code=401,
+                content={"detail": "Invalid or missing API key. Provide via X-API-Key header or api_key query parameter."},
+            )
+    return await call_next(request)
 
 
 # ---------------------------------------------------------------------------

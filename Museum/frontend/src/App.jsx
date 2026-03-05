@@ -1,6 +1,9 @@
 import { useState, useEffect, useCallback } from 'react'
 
 const API = `${import.meta.env.BASE_URL}api`.replace('//', '/')
+const API_KEY = new URLSearchParams(window.location.search).get('api_key') || ''
+const authHeaders = API_KEY ? { 'X-API-Key': API_KEY } : {}
+const apiFetch = (url, opts = {}) => fetch(url, { ...opts, headers: { ...authHeaders, ...opts.headers } })
 
 function formatMoney(n) {
   return `$${Number(n).toFixed(2)}`
@@ -21,7 +24,7 @@ function AvailabilityPanel({ selectedDate, onDateChange }) {
 
   useEffect(() => {
     if (!selectedDate) return
-    fetch(`${API}/availability?date=${selectedDate}`)
+    apiFetch(`${API}/availability?date=${selectedDate}`)
       .then((r) => r.ok ? r.json() : [])
       .then(setSlots)
       .catch(() => setSlots([]))
@@ -64,7 +67,7 @@ function AvailabilityPanel({ selectedDate, onDateChange }) {
 function TicketsPanel({ tickets, onRefresh }) {
   const cancel = async (id) => {
     if (!confirm('Cancel this ticket?')) return
-    await fetch(`${API}/tickets/${id}`, { method: 'DELETE' })
+    await apiFetch(`${API}/tickets/${id}`, { method: 'DELETE' })
     onRefresh()
   }
 
@@ -147,7 +150,7 @@ function BookingForm({ timeSlots, onBooked }) {
       ticket_type: form.ticket_type,
       visitors: String(form.num_visitors),
     })
-    fetch(`${API}/pricing?${params}`)
+    apiFetch(`${API}/pricing?${params}`)
       .then((r) => r.ok ? r.json() : null)
       .then(setPricing)
       .catch(() => setPricing(null))
@@ -163,7 +166,7 @@ function BookingForm({ timeSlots, onBooked }) {
       time_slot_id: form.time_slot_id,
       visitors: String(form.num_visitors),
     })
-    fetch(`${API}/availability?${params}`)
+    apiFetch(`${API}/availability?${params}`)
       .then((r) => r.ok ? r.json() : null)
       .then(setAvailability)
       .catch(() => setAvailability(null))
@@ -174,7 +177,7 @@ function BookingForm({ timeSlots, onBooked }) {
     setLoading(true)
     setError(null)
     try {
-      const res = await fetch(`${API}/tickets`, {
+      const res = await apiFetch(`${API}/tickets`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -280,11 +283,11 @@ export default function App() {
   const [timeSlots, setTimeSlots] = useState([])
 
   const fetchTickets = useCallback(() => {
-    fetch(`${API}/tickets`).then((r) => r.json()).then(setTickets).catch(() => {})
+    apiFetch(`${API}/tickets`).then((r) => r.json()).then(setTickets).catch(() => {})
   }, [])
 
   const fetchTimeSlots = useCallback(() => {
-    fetch(`${API}/time-slots`).then((r) => r.json()).then(setTimeSlots).catch(() => {})
+    apiFetch(`${API}/time-slots`).then((r) => r.json()).then(setTimeSlots).catch(() => {})
   }, [])
 
   useEffect(() => {

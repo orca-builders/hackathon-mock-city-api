@@ -1,6 +1,9 @@
 import { useState, useEffect, useCallback } from 'react'
 
 const API = `${import.meta.env.BASE_URL}api`.replace('//', '/')
+const API_KEY = new URLSearchParams(window.location.search).get('api_key') || ''
+const authHeaders = API_KEY ? { 'X-API-Key': API_KEY } : {}
+const apiFetch = (url, opts = {}) => fetch(url, { ...opts, headers: { ...authHeaders, ...opts.headers } })
 
 function StatusBadge({ status }) {
   return <span className={`badge ${status}`}>{status}</span>
@@ -43,7 +46,7 @@ function TablesPanel({ tables }) {
 function ReservationsPanel({ reservations, onRefresh }) {
   const cancel = async (id) => {
     if (!confirm('Cancel this reservation?')) return
-    await fetch(`${API}/reservations/${id}`, { method: 'DELETE' })
+    await apiFetch(`${API}/reservations/${id}`, { method: 'DELETE' })
     onRefresh()
   }
 
@@ -131,7 +134,7 @@ function BookingForm({ tables, timeSlots, onBooked }) {
       time_slot: form.time_slot,
       ...(form.party_size ? { party_size: form.party_size } : {}),
     })
-    fetch(`${API}/tables/available?${params}`)
+    apiFetch(`${API}/tables/available?${params}`)
       .then((r) => r.ok ? r.json() : null)
       .then(setAvailableTables)
       .catch(() => setAvailableTables(null))
@@ -144,7 +147,7 @@ function BookingForm({ tables, timeSlots, onBooked }) {
     setLoading(true)
     setError(null)
     try {
-      const res = await fetch(`${API}/reservations`, {
+      const res = await apiFetch(`${API}/reservations`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -247,15 +250,15 @@ export default function App() {
   const [timeSlots, setTimeSlots] = useState([])
 
   const fetchTables = useCallback(() => {
-    fetch(`${API}/tables`).then((r) => r.json()).then(setTables).catch(() => {})
+    apiFetch(`${API}/tables`).then((r) => r.json()).then(setTables).catch(() => {})
   }, [])
 
   const fetchReservations = useCallback(() => {
-    fetch(`${API}/reservations`).then((r) => r.json()).then(setReservations).catch(() => {})
+    apiFetch(`${API}/reservations`).then((r) => r.json()).then(setReservations).catch(() => {})
   }, [])
 
   const fetchTimeSlots = useCallback(() => {
-    fetch(`${API}/time-slots`)
+    apiFetch(`${API}/time-slots`)
       .then((r) => r.json())
       .then((data) => setTimeSlots(data.time_slots || []))
       .catch(() => {})

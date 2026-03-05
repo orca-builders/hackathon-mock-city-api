@@ -1,6 +1,9 @@
 import { useState, useEffect, useCallback } from 'react'
 
 const API = `${import.meta.env.BASE_URL}api`.replace('//', '/')
+const API_KEY = new URLSearchParams(window.location.search).get('api_key') || ''
+const authHeaders = API_KEY ? { 'X-API-Key': API_KEY } : {}
+const apiFetch = (url, opts = {}) => fetch(url, { ...opts, headers: { ...authHeaders, ...opts.headers } })
 
 function formatMoney(n) {
   return `$${Number(n).toFixed(2)}`
@@ -62,7 +65,7 @@ function FlightsPanel({ flights }) {
 function BookingsPanel({ bookings, onRefresh }) {
   const cancel = async (id) => {
     if (!confirm('Cancel this booking?')) return
-    await fetch(`${API}/bookings/${id}`, { method: 'DELETE' })
+    await apiFetch(`${API}/bookings/${id}`, { method: 'DELETE' })
     onRefresh()
   }
 
@@ -152,7 +155,7 @@ function BookingForm({ flights, cities, onBooked }) {
       destination: form.destination,
       ...(form.num_passengers > 0 ? { passengers: form.num_passengers } : {}),
     })
-    fetch(`${API}/flights/search?${params}`)
+    apiFetch(`${API}/flights/search?${params}`)
       .then((r) => r.ok ? r.json() : [])
       .then((data) => {
         setSearchResults(data)
@@ -171,7 +174,7 @@ function BookingForm({ flights, cities, onBooked }) {
       seat_class: form.seat_class,
       passengers: String(form.num_passengers),
     })
-    fetch(`${API}/pricing?${params}`)
+    apiFetch(`${API}/pricing?${params}`)
       .then((r) => r.ok ? r.json() : null)
       .then(setPricing)
       .catch(() => setPricing(null))
@@ -184,7 +187,7 @@ function BookingForm({ flights, cities, onBooked }) {
     setLoading(true)
     setError(null)
     try {
-      const res = await fetch(`${API}/bookings`, {
+      const res = await apiFetch(`${API}/bookings`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -302,15 +305,15 @@ export default function App() {
   const [cities, setCities] = useState([])
 
   const fetchFlights = useCallback(() => {
-    fetch(`${API}/flights`).then((r) => r.json()).then(setFlights).catch(() => {})
+    apiFetch(`${API}/flights`).then((r) => r.json()).then(setFlights).catch(() => {})
   }, [])
 
   const fetchBookings = useCallback(() => {
-    fetch(`${API}/bookings`).then((r) => r.json()).then(setBookings).catch(() => {})
+    apiFetch(`${API}/bookings`).then((r) => r.json()).then(setBookings).catch(() => {})
   }, [])
 
   const fetchCities = useCallback(() => {
-    fetch(`${API}/destinations`)
+    apiFetch(`${API}/destinations`)
       .then((r) => r.json())
       .then((data) => setCities(data.cities || []))
       .catch(() => {})

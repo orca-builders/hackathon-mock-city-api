@@ -25,6 +25,8 @@ services:
       context: ./Hotel
       args:
         BASE_PATH: /hotel-1/
+    environment:
+      API_KEY: hotel-1-key-abc123
     restart: unless-stopped
 
   hotel-2:
@@ -32,6 +34,8 @@ services:
       context: ./Hotel
       args:
         BASE_PATH: /hotel-2/
+    environment:
+      API_KEY: hotel-2-key-def456
     restart: unless-stopped
 
   # ── Restaurant (3 instances) ─────────────────────────────────────────
@@ -41,6 +45,8 @@ services:
       context: ./Resturant
       args:
         BASE_PATH: /restaurant-1/
+    environment:
+      API_KEY: restaurant-1-key-ghi789
     restart: unless-stopped
 
   restaurant-2:
@@ -48,6 +54,8 @@ services:
       context: ./Resturant
       args:
         BASE_PATH: /restaurant-2/
+    environment:
+      API_KEY: restaurant-2-key-jkl012
     restart: unless-stopped
 
   restaurant-3:
@@ -55,6 +63,8 @@ services:
       context: ./Resturant
       args:
         BASE_PATH: /restaurant-3/
+    environment:
+      API_KEY: restaurant-3-key-mno345
     restart: unless-stopped
 
   # ── Flight (1 instance) ─────────────────────────────────────────────
@@ -64,6 +74,8 @@ services:
       context: ./Flight
       args:
         BASE_PATH: /flight-1/
+    environment:
+      API_KEY: flight-1-key-pqr678
     restart: unless-stopped
 
   # ── Car Rental (1 instance) ─────────────────────────────────────────
@@ -73,6 +85,8 @@ services:
       context: ./CarRental
       args:
         BASE_PATH: /car-rental-1/
+    environment:
+      API_KEY: car-rental-1-key-stu901
     restart: unless-stopped
 
   # ── Tour Guide (1 instance) ─────────────────────────────────────────
@@ -82,6 +96,8 @@ services:
       context: ./TourGuide
       args:
         BASE_PATH: /tour-guide-1/
+    environment:
+      API_KEY: tour-guide-1-key-vwx234
     restart: unless-stopped
 
   # ── Museum (1 instance) ─────────────────────────────────────────────
@@ -91,4 +107,6 @@ services:
       context: ./Museum
       args:
         BASE_PATH: /museum-1/
+    environment:
+      API_KEY: museum-1-key-yza567
     restart: unless-stopped
