@@ -1,0 +1,42 @@
+services:
+  hotel:
+    build:
+      context: ./Hotel
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+  restaurant:
+    build:
+      context: ./Resturant
+    ports:
+      - "8001:8000"
+    restart: unless-stopped
+
+  flight:
+    build:
+      context: ./Flight
+    ports:
+      - "8002:8000"
+    restart: unless-stopped
+
+  car-rental:
+    build:
+      context: ./CarRental
+    ports:
+      - "8003:8000"
+    restart: unless-stopped
+
+  tour-guide:
+    build:
+      context: ./TourGuide
+    ports:
+      - "8004:8000"
+    restart: unless-stopped
+
+  museum:
+    build:
+      context: ./Museum
+    ports:
+      - "8005:8000"
+    restart: unless-stopped

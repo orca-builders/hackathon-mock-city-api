@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 import datetime as dt
+import os
 from contextlib import asynccontextmanager
 from typing import Optional
 
 from fastapi import FastAPI, HTTPException, Depends, Query
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from sqlalchemy import (
     create_engine, Column, Integer, String, Float, Date, DateTime,
@@ -484,3 +486,7 @@ def cancel_booking(booking_id: int, db: Session = Depends(get_db)):
     db.refresh(b)
 
     return booking_to_out(b)
+
+
+if os.path.isdir("static"):
+    app.mount("/", StaticFiles(directory="static", html=True), name="static")
