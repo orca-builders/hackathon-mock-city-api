@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restaurant Reservation API — Mock APIs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-brand">Mock APIs</span>
+  <div class="nav-links">
+    <a href="index.html">Overview</a>
+    <a href="hotel.html">Hotel</a>
+    <a href="restaurant.html" class="active">Restaurant</a>
+    <a href="flight.html">Flight</a>
+    <a href="car-rental.html">Car Rental</a>
+    <a href="tour-guide.html">Tour Guide</a>
+    <a href="museum.html">Museum</a>
+  </div>
+</nav>
+
+<div class="service-header">
+  <h1>Restaurant Reservation API</h1>
+  <p class="subtitle">Table reservations with time slots, party size validation, and location-based seating</p>
+  <div class="accent-bar" style="background:var(--restaurant)"></div>
+</div>
+
+<div class="container">
+
+  <div class="btn-group">
+    <a href="../Resturant/agent.md" download="restaurant-agent-reference.md" class="btn btn-download">
+      <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+      Download Agent Reference
+    </a>
+    <a href="http://localhost:8080/restaurant-1/" target="_blank" class="btn btn-primary">Open Dashboard</a>
+  </div>
+
+  <div class="section">
+    <h2>Overview</h2>
+    <p>Simple restaurant reservation API designed for LLM / AI-agent consumption. Manages 12 tables across 4 locations (indoor, outdoor, patio, bar) with 6 fixed time slots per day. Each table can only be reserved once per time slot per day.</p>
+  </div>
+
+  <div class="section">
+    <h2>Instances</h2>
+    <table>
+      <thead><tr><th>Instance</th><th>Dashboard</th><th>API</th><th>API Key</th></tr></thead>
+      <tbody>
+        <tr><td>Restaurant 1</td><td><a href="http://localhost:8080/restaurant-1/" target="_blank">/restaurant-1/</a></td><td><code>/restaurant-1/api/</code></td><td><code>restaurant-1-key-ghi789</code></td></tr>
+        <tr><td>Restaurant 2</td><td><a href="http://localhost:8080/restaurant-2/" target="_blank">/restaurant-2/</a></td><td><code>/restaurant-2/api/</code></td><td><code>restaurant-2-key-jkl012</code></td></tr>
+        <tr><td>Restaurant 3</td><td><a href="http://localhost:8080/restaurant-3/" target="_blank">/restaurant-3/</a></td><td><code>/restaurant-3/api/</code></td><td><code>restaurant-3-key-mno345</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>Quick Start</h2>
+    <h3>Backend (FastAPI)</h3>
+    <pre>cd Resturant/backend
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+uvicorn main:app --reload --port 8001</pre>
+    <h3>Frontend (React + Vite)</h3>
+    <pre>cd Resturant/frontend
+npm install
+npm run dev</pre>
+  </div>
+
+  <div class="section">
+    <h2>Time Slots</h2>
+    <p>Six fixed 1.5-hour dining windows:</p>
+    <table>
+      <thead><tr><th>Slot</th><th>Type</th></tr></thead>
+      <tbody>
+        <tr><td><code>11:00</code></td><td>Lunch</td></tr>
+        <tr><td><code>12:30</code></td><td>Lunch</td></tr>
+        <tr><td><code>14:00</code></td><td>Lunch</td></tr>
+        <tr><td><code>18:00</code></td><td>Dinner</td></tr>
+        <tr><td><code>19:30</code></td><td>Dinner</td></tr>
+        <tr><td><code>21:00</code></td><td>Dinner</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>API Endpoints</h2>
+
+    <div class="endpoint">
+      <span class="method method-get">GET</span>
+      <span class="path">/api/tables</span>
+      <div class="desc">List all tables with number, capacity, and location.</div>
+    </div>
+
+    <div class="endpoint">
+      <span class="method method-get">GET</span>
+      <span class="path">/api/tables/available</span>
+      <div class="desc">Find tables available for a specific date and time slot.</div>
+      <table>
+        <thead><tr><th>Parameter</th><th>Type</th><th>Required</th></tr></thead>
+        <tbody>
+          <tr><td><code>date</code></td><td>date (YYYY-MM-DD)</td><td>Yes</td></tr>
+          <tr><td><code>time_slot</code></td><td>string (HH:MM)</td><td>Yes</td></tr>
+          <tr><td><code>party_size</code></td><td>integer</td><td>No</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="endpoint">
+      <span class="method method-get">GET</span>
+      <span class="path">/api/time-slots</span>
+      <div class="desc">List all valid time slots.</div>
+    </div>
+
+    <div class="endpoint">
+      <span class="method method-post">POST</span>
+      <span class="path">/api/reservations</span>
+      <div class="desc">Create a new reservation.</div>
+      <table>
+        <thead><tr><th>Body Field</th><th>Type</th><th>Required</th></tr></thead>
+        <tbody>
+          <tr><td><code>table_id</code></td><td>integer</td><td>Yes</td></tr>
+          <tr><td><code>guest_name</code></td><td>string</td><td>Yes</td></tr>
+          <tr><td><code>guest_email</code></td><td>string</td><td>Yes</td></tr>
+          <tr><td><code>date</code></td><td>date (YYYY-MM-DD)</td><td>Yes</td></tr>
+          <tr><td><code>time_slot</code></td><td>string (HH:MM)</td><td>Yes</td></tr>
+          <tr><td><code>party_size</code></td><td>integer (&ge;1)</td><td>Yes</td></tr>
+          <tr><td><code>special_requests</code></td><td>string</td><td>No</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="endpoint">
+      <span class="method method-get">GET</span>
+      <span class="path">/api/reservations</span>
+      <div class="desc">List all reservations. Filter by <code>date</code> and/or <code>status</code>.</div>
+    </div>
+
+    <div class="endpoint">
+      <span class="method method-get">GET</span>
+      <span class="path">/api/reservations/{id}</span>
+      <div class="desc">Get details of a specific reservation.</div>
+    </div>
+
+    <div class="endpoint">
+      <span class="method method-delete">DELETE</span>
+      <span class="path">/api/reservations/{id}</span>
+      <div class="desc">Cancel a reservation.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Tables (Seed Data)</h2>
+    <table>
+      <thead><tr><th>ID</th><th>Table #</th><th>Capacity</th><th>Location</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>T1</td><td>2</td><td>indoor</td></tr>
+        <tr><td>2</td><td>T2</td><td>2</td><td>indoor</td></tr>
+        <tr><td>3</td><td>T3</td><td>4</td><td>indoor</td></tr>
+        <tr><td>4</td><td>T4</td><td>4</td><td>indoor</td></tr>
+        <tr><td>5</td><td>T5</td><td>6</td><td>indoor</td></tr>
+        <tr><td>6</td><td>T6</td><td>2</td><td>bar</td></tr>
+        <tr><td>7</td><td>T7</td><td>2</td><td>bar</td></tr>
+        <tr><td>8</td><td>T8</td><td>4</td><td>patio</td></tr>
+        <tr><td>9</td><td>T9</td><td>4</td><td>patio</td></tr>
+        <tr><td>10</td><td>T10</td><td>6</td><td>patio</td></tr>
+        <tr><td>11</td><td>T11</td><td>4</td><td>outdoor</td></tr>
+        <tr><td>12</td><td>T12</td><td>8</td><td>outdoor</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<div class="footer">
+  <a href="index.html">&larr; Back to Overview</a> &middot; Hackathon Mock APIs
+</div>
+
+</body>
+</html>

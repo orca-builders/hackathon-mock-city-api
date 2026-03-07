@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Museum Ticket API — Mock APIs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-brand">Mock APIs</span>
+  <div class="nav-links">
+    <a href="index.html">Overview</a>
+    <a href="hotel.html">Hotel</a>
+    <a href="restaurant.html">Restaurant</a>
+    <a href="flight.html">Flight</a>
+    <a href="car-rental.html">Car Rental</a>
+    <a href="tour-guide.html">Tour Guide</a>
+    <a href="museum.html" class="active">Museum</a>
+  </div>
+</nav>
+
+<div class="service-header">
+  <h1>Museum Ticket Booking API</h1>
+  <p class="subtitle">Timed-entry tickets, 4 time slots, 4 ticket types, visitor capacity per slot</p>
+  <div class="accent-bar" style="background:var(--museum)"></div>
+</div>
+
+<div class="container">
+
+  <div class="btn-group">
+    <a href="../Museum/agent.md" download="museum-agent-reference.md" class="btn btn-download">
+      <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+      Download Agent Reference
+    </a>
+    <a href="http://localhost:8080/museum-1/" target="_blank" class="btn btn-primary">Open Dashboard</a>
+  </div>
+
+  <div class="section">
+    <h2>Overview</h2>
+    <p>Museum ticket booking API managing timed-entry visits across 4 daily time slots. Each slot has a 50-visitor capacity. Supports 4 ticket types (adult, child, senior, student) with different pricing. Booking tickets decrements available spots; cancelling frees them.</p>
+  </div>
+
+  <div class="section">
+    <h2>Instance</h2>
+    <table>
+      <thead><tr><th>Instance</th><th>Dashboard</th><th>API</th><th>API Key</th></tr></thead>
+      <tbody>
+        <tr><td>Museum 1</td><td><a href="http://localhost:8080/museum-1/" target="_blank">/museum-1/</a></td><td><code>/museum-1/api/</code></td><td><code>museum-1-key-yza567</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>Time Slots</h2>
+    <table>
+      <thead><tr><th>ID</th><th>Window</th><th>Capacity</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>09:00 – 11:00</td><td>50 visitors</td></tr>
+        <tr><td>2</td><td>11:00 – 13:00</td><td>50 visitors</td></tr>
+        <tr><td>3</td><td>13:00 – 15:00</td><td>50 visitors</td></tr>
+        <tr><td>4</td><td>15:00 – 17:00</td><td>50 visitors</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>Ticket Types &amp; Prices</h2>
+    <table>
+      <thead><tr><th>Type</th><th>Price per Person</th></tr></thead>
+      <tbody>
+        <tr><td>adult</td><td>$25.00</td></tr>
+        <tr><td>child</td><td>$12.00</td></tr>
+        <tr><td>senior</td><td>$18.00</td></tr>
+        <tr><td>student</td><td>$15.00</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>API Endpoints</h2>
+
+    <div class="endpoint">
+      <span class="method method-get">GET</span>
+      <span class="path">/api/time-slots</span>
+      <div class="desc">List all time slots with their capacity.</div>
+    </div>
+
+    <div class="endpoint">
+      <span class="method method-get">GET</span>
+      <span class="path">/api/ticket-types</span>
+      <div class="desc">List all ticket types with prices.</div>
+    </div>
+
+    <div class="endpoint">
+      <span class="method method-get">GET</span>
+      <span class="path">/api/availability</span>
+      <div class="desc">Check visitor availability for a date. Returns remaining spots per slot.</div>
+      <table>
+        <thead><tr><th>Parameter</th><th>Type</th><th>Required</th></tr></thead>
+        <tbody>
+          <tr><td><code>date</code></td><td>date (YYYY-MM-DD)</td><td>Yes</td></tr>
+          <tr><td><code>time_slot_id</code></td><td>integer</td><td>No (returns single slot if provided)</td></tr>
+          <tr><td><code>visitors</code></td><td>integer</td><td>No</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="endpoint">
+      <span class="method method-get">GET</span>
+      <span class="path">/api/pricing</span>
+      <div class="desc">Get a price quote: <code>price_per_person &times; num_visitors</code>.</div>
+      <table>
+        <thead><tr><th>Parameter</th><th>Type</th><th>Required</th></tr></thead>
+        <tbody>
+          <tr><td><code>ticket_type</code></td><td>string</td><td>No (default: adult)</td></tr>
+          <tr><td><code>visitors</code></td><td>integer</td><td>No (default: 1)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="endpoint">
+      <span class="method method-post">POST</span>
+      <span class="path">/api/tickets</span>
+      <div class="desc">Book museum tickets for a specific date and time slot.</div>
+      <table>
+        <thead><tr><th>Body Field</th><th>Type</th><th>Required</th></tr></thead>
+        <tbody>
+          <tr><td><code>time_slot_id</code></td><td>integer (1–4)</td><td>Yes</td></tr>
+          <tr><td><code>visit_date</code></td><td>date (YYYY-MM-DD)</td><td>Yes</td></tr>
+          <tr><td><code>visitor_name</code></td><td>string</td><td>Yes</td></tr>
+          <tr><td><code>visitor_email</code></td><td>string</td><td>Yes</td></tr>
+          <tr><td><code>num_visitors</code></td><td>integer (&ge;1)</td><td>Yes</td></tr>
+          <tr><td><code>ticket_type</code></td><td>string</td><td>No (default: adult)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="endpoint">
+      <span class="method method-get">GET</span>
+      <span class="path">/api/tickets</span>
+      <div class="desc">List all tickets. Filter by <code>date</code> and/or <code>status</code>.</div>
+    </div>
+
+    <div class="endpoint">
+      <span class="method method-get">GET</span>
+      <span class="path">/api/tickets/{id}</span>
+      <div class="desc">Get details of a specific ticket.</div>
+    </div>
+
+    <div class="endpoint">
+      <span class="method method-delete">DELETE</span>
+      <span class="path">/api/tickets/{id}</span>
+      <div class="desc">Cancel a ticket. Frees up the spots.</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <a href="index.html">&larr; Back to Overview</a> &middot; Hackathon Mock APIs
+</div>
+
+</body>
+</html>

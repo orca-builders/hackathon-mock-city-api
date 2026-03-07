@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hackathon Mock APIs — Documentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-brand">Mock APIs</span>
+  <div class="nav-links">
+    <a href="index.html" class="active">Overview</a>
+    <a href="hotel.html">Hotel</a>
+    <a href="restaurant.html">Restaurant</a>
+    <a href="flight.html">Flight</a>
+    <a href="car-rental.html">Car Rental</a>
+    <a href="tour-guide.html">Tour Guide</a>
+    <a href="museum.html">Museum</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <h1>Hackathon Mock APIs</h1>
+  <p class="subtitle">A collection of booking &amp; reservation APIs designed for LLM and AI-agent consumption, each with a React dashboard for human verification.</p>
+  <div class="btn-group" style="justify-content:center">
+    <a href="http://localhost:8080" class="btn btn-primary" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      Open Gateway
+    </a>
+    <a href="#quick-start" class="btn btn-outline">Quick Start</a>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- SERVICES -->
+  <div class="section">
+    <h2>Services</h2>
+    <p>Six independent service types, each with its own backend, frontend dashboard, and AI-agent-ready API.</p>
+    <div class="cards">
+      <a class="card" href="hotel.html" style="--accent:var(--hotel)">
+        <h3>Hotel</h3>
+        <p>Room reservations, date-range pricing with weekend surcharges, capacity management</p>
+        <code>2 instances &middot; /hotel-1/ &middot; /hotel-2/</code>
+      </a>
+      <a class="card" href="restaurant.html" style="--accent:var(--restaurant)">
+        <h3>Restaurant</h3>
+        <p>Table reservations, 6 time slots, party size validation, location filtering</p>
+        <code>3 instances &middot; /restaurant-1/ &middot; /restaurant-2/ &middot; /restaurant-3/</code>
+      </a>
+      <a class="card" href="flight.html" style="--accent:var(--flight)">
+        <h3>SkyMock Air — Flights</h3>
+        <p>Flight bookings across 6 US cities, 3 seat classes, seat availability tracking</p>
+        <code>1 instance &middot; /flight-1/</code>
+      </a>
+      <a class="card" href="car-rental.html" style="--accent:var(--car)">
+        <h3>Car Rental</h3>
+        <p>16-vehicle fleet across 7 categories, date-range availability, daily rate pricing</p>
+        <code>1 instance &middot; /car-rental-1/</code>
+      </a>
+      <a class="card" href="tour-guide.html" style="--accent:var(--tour)">
+        <h3>Tour Guide</h3>
+        <p>12 tours across 6 categories, difficulty levels, group size limits, per-person pricing</p>
+        <code>1 instance &middot; /tour-guide-1/</code>
+      </a>
+      <a class="card" href="museum.html" style="--accent:var(--museum)">
+        <h3>Museum</h3>
+        <p>Timed-entry tickets, 4 time slots, 4 ticket types, visitor capacity per slot</p>
+        <code>1 instance &middot; /museum-1/</code>
+      </a>
+    </div>
+  </div>
+
+  <!-- ARCHITECTURE -->
+  <div class="section">
+    <h2>Architecture</h2>
+    <p>All services run behind a single nginx gateway on port <code>8080</code>. Each container runs FastAPI (Python) serving both the REST API and a built React dashboard as static files.</p>
+    <div class="arch-diagram">                         <span class="highlight">:8080</span>
+                      ┌─────────┐
+                      │  nginx  │  gateway
+                      │  proxy  │  (landing page + reverse proxy)
+                      └────┬────┘
+       ┌──────┬───────┬────┴────┬──────┬──────┐
+       │      │       │         │      │      │
+    hotel-N  rest-N  flight  car-rental  tour  museum
+     :8000   :8000   :8000    :8000    :8000  :8000
+
+    Each container:
+    ┌──────────────────────────┐
+    │  FastAPI (Python)        │
+    │  ├── /api/*  REST API    │
+    │  └── /*     React SPA    │
+    │  SQLite (in-memory DB)   │
+    └──────────────────────────┘</div>
+  </div>
+
+  <!-- QUICK START -->
+  <div class="section" id="quick-start">
+    <h2>Quick Start</h2>
+    <h3>Run everything with Docker</h3>
+    <pre>docker compose up --build</pre>
+    <p>Then open <a href="http://localhost:8080" target="_blank">http://localhost:8080</a> to see the gateway landing page with links to all services.</p>
+
+    <h3>Run a single service without Docker</h3>
+    <pre># Backend
+cd Hotel/backend
+python3 -m venv venv &amp;&amp; source venv/bin/activate
+pip install -r requirements.txt
+uvicorn main:app --reload --port 8000
+
+# Frontend (separate terminal)
+cd Hotel/frontend
+npm install &amp;&amp; npm run dev</pre>
+  </div>
+
+  <!-- SERVICE INSTANCES -->
+  <div class="section">
+    <h2>Service Instances</h2>
+    <p>Each service can have multiple independent instances (own container, own database). All share the same codebase but are fully isolated.</p>
+    <table>
+      <thead><tr><th>Instance</th><th>Dashboard</th><th>API Base</th><th>Schema</th></tr></thead>
+      <tbody>
+        <tr><td>Hotel 1</td><td><code>/hotel-1/</code></td><td><code>/hotel-1/api/</code></td><td><code>/hotel-1/api/schema</code></td></tr>
+        <tr><td>Hotel 2</td><td><code>/hotel-2/</code></td><td><code>/hotel-2/api/</code></td><td><code>/hotel-2/api/schema</code></td></tr>
+        <tr><td>Restaurant 1</td><td><code>/restaurant-1/</code></td><td><code>/restaurant-1/api/</code></td><td><code>/restaurant-1/api/schema</code></td></tr>
+        <tr><td>Restaurant 2</td><td><code>/restaurant-2/</code></td><td><code>/restaurant-2/api/</code></td><td><code>/restaurant-2/api/schema</code></td></tr>
+        <tr><td>Restaurant 3</td><td><code>/restaurant-3/</code></td><td><code>/restaurant-3/api/</code></td><td><code>/restaurant-3/api/schema</code></td></tr>
+        <tr><td>Flight 1</td><td><code>/flight-1/</code></td><td><code>/flight-1/api/</code></td><td><code>/flight-1/api/schema</code></td></tr>
+        <tr><td>Car Rental 1</td><td><code>/car-rental-1/</code></td><td><code>/car-rental-1/api/</code></td><td><code>/car-rental-1/api/schema</code></td></tr>
+        <tr><td>Tour Guide 1</td><td><code>/tour-guide-1/</code></td><td><code>/tour-guide-1/api/</code></td><td><code>/tour-guide-1/api/schema</code></td></tr>
+        <tr><td>Museum 1</td><td><code>/museum-1/</code></td><td><code>/museum-1/api/</code></td><td><code>/museum-1/api/schema</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- API KEY AUTH -->
+  <div class="section">
+    <h2>API Key Authentication</h2>
+    <p>Every API endpoint is protected by an API key. Provide it in one of two ways:</p>
+    <pre># Header (recommended)
+curl -H "X-API-Key: hotel-1-key-abc123" http://localhost:8080/hotel-1/api/rooms
+
+# Query parameter
+curl "http://localhost:8080/hotel-1/api/rooms?api_key=hotel-1-key-abc123"</pre>
+
+    <h3>Default API Keys</h3>
+    <table>
+      <thead><tr><th>Instance</th><th>API Key</th></tr></thead>
+      <tbody>
+        <tr><td>hotel-1</td><td><code>hotel-1-key-abc123</code></td></tr>
+        <tr><td>hotel-2</td><td><code>hotel-2-key-def456</code></td></tr>
+        <tr><td>restaurant-1</td><td><code>restaurant-1-key-ghi789</code></td></tr>
+        <tr><td>restaurant-2</td><td><code>restaurant-2-key-jkl012</code></td></tr>
+        <tr><td>restaurant-3</td><td><code>restaurant-3-key-mno345</code></td></tr>
+        <tr><td>flight-1</td><td><code>flight-1-key-pqr678</code></td></tr>
+        <tr><td>car-rental-1</td><td><code>car-rental-1-key-stu901</code></td></tr>
+        <tr><td>tour-guide-1</td><td><code>tour-guide-1-key-vwx234</code></td></tr>
+        <tr><td>museum-1</td><td><code>museum-1-key-yza567</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FOR AI AGENTS -->
+  <div class="section">
+    <h2>For LLM / AI Agents</h2>
+    <p>Each service exposes a self-describing schema endpoint at <code>GET /&lt;service&gt;/api/schema</code> that returns a JSON manifest with all endpoints, parameters, payloads, and domain values.</p>
+    <p>For comprehensive offline documentation, download the <strong>Agent Reference</strong> file from each service page. These <code>agent.md</code> files contain everything an AI agent needs: authentication, workflows, request/response schemas, seed data, and error handling.</p>
+    <div class="btn-group">
+      <a href="hotel.html" class="btn btn-outline">Hotel Docs</a>
+      <a href="restaurant.html" class="btn btn-outline">Restaurant Docs</a>
+      <a href="flight.html" class="btn btn-outline">Flight Docs</a>
+      <a href="car-rental.html" class="btn btn-outline">Car Rental Docs</a>
+      <a href="tour-guide.html" class="btn btn-outline">Tour Guide Docs</a>
+      <a href="museum.html" class="btn btn-outline">Museum Docs</a>
+    </div>
+  </div>
+
+  <!-- ADD INSTANCES -->
+  <div class="section">
+    <h2>Adding More Instances</h2>
+    <p>To add a 3rd hotel or 4th restaurant:</p>
+    <h3>1. Add to <code>docker-compose.yml</code></h3>
+    <pre>hotel-3:
+  build:
+    context: ./Hotel
+    args:
+      BASE_PATH: /hotel-3/
+  environment:
+    API_KEY: hotel-3-key-xyz789
+  restart: unless-stopped</pre>
+
+    <h3>2. Add to <code>gateway/nginx.conf</code></h3>
+    <pre>location /hotel-3/ {
+    proxy_pass http://hotel-3:8000/;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+}</pre>
+
+    <h3>3. Add to <code>gateway</code>'s <code>depends_on</code> list, then rebuild</h3>
+    <pre>docker compose up --build</pre>
+  </div>
+
+  <!-- TECH STACK -->
+  <div class="section">
+    <h2>Tech Stack</h2>
+    <table>
+      <thead><tr><th>Layer</th><th>Technology</th></tr></thead>
+      <tbody>
+        <tr><td>Backend</td><td>Python, FastAPI, SQLAlchemy, SQLite</td></tr>
+        <tr><td>Frontend</td><td>React 19, Vite</td></tr>
+        <tr><td>Gateway</td><td>nginx (path-based reverse proxy)</td></tr>
+        <tr><td>Containers</td><td>Docker, Docker Compose</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<div class="footer">
+  Hackathon Mock APIs &middot; Built for AI-agent development and testing
+</div>
+
+</body>
+</html>

@@ -1,0 +1,98 @@
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f8fafc;--surface:#fff;--text:#1a1a2e;--muted:#6b7280;--border:#e5e7eb;
+  --primary:#6366f1;--primary-hover:#4f46e5;
+  --hotel:#6366f1;--restaurant:#f59e0b;--flight:#0ea5e9;
+  --car:#22c55e;--tour:#7c3aed;--museum:#e11d48;
+  --radius:12px;--shadow:0 1px 3px rgba(0,0,0,.08);
+  --shadow-lg:0 4px 16px rgba(0,0,0,.1);
+}
+body{font-family:"Inter",system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+a{color:var(--primary);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* NAV */
+.nav{background:var(--surface);border-bottom:1px solid var(--border);padding:.75rem 2rem;display:flex;align-items:center;gap:1.5rem;position:sticky;top:0;z-index:50;box-shadow:var(--shadow)}
+.nav-brand{font-weight:700;font-size:1.05rem;color:var(--text)}
+.nav-links{display:flex;gap:.25rem;flex-wrap:wrap}
+.nav-links a{padding:.35rem .7rem;border-radius:6px;font-size:.82rem;color:var(--muted);font-weight:500;transition:background .15s,color .15s}
+.nav-links a:hover,.nav-links a.active{background:var(--primary);color:#fff;text-decoration:none}
+
+/* HERO */
+.hero{padding:4rem 2rem 3rem;text-align:center;max-width:800px;margin:0 auto}
+.hero h1{font-size:2.2rem;font-weight:800;margin-bottom:.5rem}
+.hero .subtitle{font-size:1.1rem;color:var(--muted);margin-bottom:2rem}
+
+/* CONTAINER */
+.container{max-width:960px;margin:0 auto;padding:0 2rem 4rem}
+
+/* SECTION */
+.section{margin-bottom:3rem}
+.section h2{font-size:1.4rem;font-weight:700;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:2px solid var(--border)}
+.section h3{font-size:1.1rem;font-weight:600;margin:1.5rem 0 .5rem}
+.section p{color:var(--muted);margin-bottom:.75rem}
+
+/* CARDS GRID */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;margin-top:1rem}
+.card{background:var(--surface);border-radius:var(--radius);padding:1.4rem;box-shadow:var(--shadow);border-left:4px solid var(--accent,var(--primary));transition:transform .15s,box-shadow .15s;text-decoration:none;color:inherit;display:block}
+.card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);text-decoration:none}
+.card h3{font-size:1rem;font-weight:600;margin-bottom:.3rem}
+.card p{font-size:.85rem;color:var(--muted);margin-bottom:.5rem}
+.card code{font-size:.75rem;color:var(--muted);background:var(--bg);padding:.15rem .4rem;border-radius:4px}
+.card .badge{display:inline-block;font-size:.7rem;font-weight:600;padding:.15rem .45rem;border-radius:4px;color:#fff;margin-right:.3rem}
+
+/* TABLES */
+table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.88rem;background:var(--surface);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+thead{background:var(--bg)}
+th{text-align:left;padding:.65rem .85rem;font-weight:600;font-size:.78rem;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);border-bottom:2px solid var(--border)}
+td{padding:.6rem .85rem;border-bottom:1px solid var(--border)}
+tr:last-child td{border-bottom:none}
+tbody tr:hover{background:#f1f5f9}
+
+/* CODE */
+pre{background:#1e293b;color:#e2e8f0;padding:1rem 1.25rem;border-radius:8px;overflow-x:auto;font-size:.85rem;line-height:1.5;margin:1rem 0}
+code{font-family:"Fira Code","SF Mono",monospace;font-size:.85em}
+p code,li code,td code{background:#f1f5f9;padding:.1rem .35rem;border-radius:4px;font-size:.82em;color:#e11d48}
+
+/* ARCHITECTURE */
+.arch-diagram{background:#1e293b;color:#94a3b8;padding:1.5rem;border-radius:8px;font-family:"Fira Code",monospace;font-size:.8rem;line-height:1.6;overflow-x:auto;white-space:pre;margin:1rem 0}
+.arch-diagram .highlight{color:#6366f1;font-weight:700}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.65rem 1.3rem;border-radius:8px;font-weight:600;font-size:.88rem;border:none;cursor:pointer;transition:background .15s,transform .1s;text-decoration:none}
+.btn:hover{transform:translateY(-1px);text-decoration:none}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-hover)}
+.btn-outline{background:transparent;border:2px solid var(--border);color:var(--text)}
+.btn-outline:hover{border-color:var(--primary);color:var(--primary)}
+.btn-download{background:#059669;color:#fff}
+.btn-download:hover{background:#047857}
+.btn svg{width:18px;height:18px;fill:currentColor}
+.btn-group{display:flex;gap:.75rem;flex-wrap:wrap;margin:1.5rem 0}
+
+/* SERVICE HEADER */
+.service-header{padding:3rem 2rem 2rem;text-align:center}
+.service-header h1{font-size:2rem;font-weight:800;margin-bottom:.4rem}
+.service-header .subtitle{font-size:1rem;color:var(--muted)}
+.service-header .accent-bar{width:60px;height:4px;border-radius:2px;margin:.75rem auto 0}
+
+/* ENDPOINT BLOCKS */
+.endpoint{background:var(--surface);border-radius:var(--radius);padding:1.25rem 1.5rem;margin:1rem 0;box-shadow:var(--shadow);border-left:4px solid var(--primary)}
+.endpoint .method{display:inline-block;font-size:.75rem;font-weight:700;padding:.2rem .5rem;border-radius:4px;color:#fff;margin-right:.5rem;text-transform:uppercase}
+.method-get{background:#059669}
+.method-post{background:#2563eb}
+.method-delete{background:#dc2626}
+.endpoint .path{font-family:"Fira Code",monospace;font-weight:600;font-size:.9rem}
+.endpoint .desc{margin-top:.5rem;font-size:.88rem;color:var(--muted)}
+
+/* FOOTER */
+.footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+  .nav{flex-direction:column;gap:.5rem;padding:.75rem 1rem}
+  .hero{padding:2.5rem 1rem 2rem}
+  .hero h1{font-size:1.6rem}
+  .container{padding:0 1rem 3rem}
+  .cards{grid-template-columns:1fr}
+}

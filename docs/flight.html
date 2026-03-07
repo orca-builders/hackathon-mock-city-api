@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkyMock Air — Flight API — Mock APIs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-brand">Mock APIs</span>
+  <div class="nav-links">
+    <a href="index.html">Overview</a>
+    <a href="hotel.html">Hotel</a>
+    <a href="restaurant.html">Restaurant</a>
+    <a href="flight.html" class="active">Flight</a>
+    <a href="car-rental.html">Car Rental</a>
+    <a href="tour-guide.html">Tour Guide</a>
+    <a href="museum.html">Museum</a>
+  </div>
+</nav>
+
+<div class="service-header">
+  <h1>SkyMock Air — Flight Reservation API</h1>
+  <p class="subtitle">Flight bookings across 6 US cities, 3 seat classes, seat availability tracking</p>
+  <div class="accent-bar" style="background:var(--flight)"></div>
+</div>
+
+<div class="container">
+
+  <div class="btn-group">
+    <a href="../Flight/agent.md" download="flight-agent-reference.md" class="btn btn-download">
+      <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+      Download Agent Reference
+    </a>
+    <a href="http://localhost:8080/flight-1/" target="_blank" class="btn btn-primary">Open Dashboard</a>
+  </div>
+
+  <div class="section">
+    <h2>Overview</h2>
+    <p>Single-airline flight reservation API for the fictional <strong>SkyMock Air</strong>. Manages 15 flights between 6 US cities with 3 seat classes (economy, business, first) and dynamic seat availability tracking. Booking a flight decrements available seats; cancelling restores them.</p>
+  </div>
+
+  <div class="section">
+    <h2>Instance</h2>
+    <table>
+      <thead><tr><th>Instance</th><th>Dashboard</th><th>API</th><th>API Key</th></tr></thead>
+      <tbody>
+        <tr><td>Flight 1</td><td><a href="http://localhost:8080/flight-1/" target="_blank">/flight-1/</a></td><td><code>/flight-1/api/</code></td><td><code>flight-1-key-pqr678</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>Seat Classes &amp; Pricing</h2>
+    <table>
+      <thead><tr><th>Class</th><th>Multiplier</th><th>Example ($199 base)</th></tr></thead>
+      <tbody>
+        <tr><td>economy</td><td>1.0x</td><td>$199.00</td></tr>
+        <tr><td>business</td><td>2.5x</td><td>$497.50</td></tr>
+        <tr><td>first</td><td>5.0x</td><td>$995.00</td></tr>
+      </tbody>
+    </table>
+    <p>Formula: <code>base_price &times; class_multiplier &times; num_passengers</code></p>
+  </div>
+
+  <div class="section">
+    <h2>API Endpoints</h2>
+
+    <div class="endpoint">
+      <span class="method method-get">GET</span>
+      <span class="path">/api/destinations</span>
+      <div class="desc">List all served cities.</div>
+    </div>
+
+    <div class="endpoint">
+      <span class="method method-get">GET</span>
+      <span class="path">/api/flights</span>
+      <div class="desc">List all flights. Filter by <code>origin</code>, <code>destination</code>, <code>date</code>.</div>
+    </div>
+
+    <div class="endpoint">
+      <span class="method method-get">GET</span>
+      <span class="path">/api/flights/search</span>
+      <div class="desc">Search for available flights with enough seats.</div>
+      <table>
+        <thead><tr><th>Parameter</th><th>Type</th><th>Required</th></tr></thead>
+        <tbody>
+          <tr><td><code>origin</code></td><td>string</td><td>Yes</td></tr>
+          <tr><td><code>destination</code></td><td>string</td><td>Yes</td></tr>
+          <tr><td><code>date</code></td><td>date (YYYY-MM-DD)</td><td>No</td></tr>
+          <tr><td><code>passengers</code></td><td>integer</td><td>No</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="endpoint">
+      <span class="method method-get">GET</span>
+      <span class="path">/api/flights/{id}</span>
+      <div class="desc">Get full details of a specific flight.</div>
+    </div>
+
+    <div class="endpoint">
+      <span class="method method-get">GET</span>
+      <span class="path">/api/pricing</span>
+      <div class="desc">Get a price quote by seat class and passenger count.</div>
+      <table>
+        <thead><tr><th>Parameter</th><th>Type</th><th>Required</th></tr></thead>
+        <tbody>
+          <tr><td><code>flight_id</code></td><td>integer</td><td>Yes</td></tr>
+          <tr><td><code>seat_class</code></td><td>string</td><td>No (default: economy)</td></tr>
+          <tr><td><code>passengers</code></td><td>integer</td><td>No (default: 1)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="endpoint">
+      <span class="method method-post">POST</span>
+      <span class="path">/api/bookings</span>
+      <div class="desc">Create a new booking. Decrements available seats.</div>
+      <table>
+        <thead><tr><th>Body Field</th><th>Type</th><th>Required</th></tr></thead>
+        <tbody>
+          <tr><td><code>flight_id</code></td><td>integer</td><td>Yes</td></tr>
+          <tr><td><code>passenger_name</code></td><td>string</td><td>Yes</td></tr>
+          <tr><td><code>passenger_email</code></td><td>string</td><td>Yes</td></tr>
+          <tr><td><code>num_passengers</code></td><td>integer (&ge;1)</td><td>Yes</td></tr>
+          <tr><td><code>seat_class</code></td><td>string</td><td>No (default: economy)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="endpoint">
+      <span class="method method-get">GET</span>
+      <span class="path">/api/bookings</span>
+      <div class="desc">List all bookings. Filter by <code>status</code>.</div>
+    </div>
+
+    <div class="endpoint">
+      <span class="method method-get">GET</span>
+      <span class="path">/api/bookings/{id}</span>
+      <div class="desc">Get details of a specific booking.</div>
+    </div>
+
+    <div class="endpoint">
+      <span class="method method-delete">DELETE</span>
+      <span class="path">/api/bookings/{id}</span>
+      <div class="desc">Cancel a booking. Restores available seats.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Flights (Seed Data)</h2>
+    <table>
+      <thead><tr><th>ID</th><th>Flight</th><th>Route</th><th>Date</th><th>Depart</th><th>Arrive</th><th>Seats</th><th>Price</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>SM101</td><td>New York &rarr; Los Angeles</td><td>Mar 10</td><td>08:00</td><td>11:30</td><td>180</td><td>$199</td></tr>
+        <tr><td>2</td><td>SM102</td><td>Los Angeles &rarr; New York</td><td>Mar 10</td><td>14:00</td><td>22:15</td><td>180</td><td>$209</td></tr>
+        <tr><td>3</td><td>SM201</td><td>New York &rarr; Chicago</td><td>Mar 11</td><td>07:30</td><td>09:45</td><td>150</td><td>$129</td></tr>
+        <tr><td>4</td><td>SM202</td><td>Chicago &rarr; New York</td><td>Mar 11</td><td>16:00</td><td>20:10</td><td>150</td><td>$139</td></tr>
+        <tr><td>5</td><td>SM301</td><td>Chicago &rarr; Miami</td><td>Mar 12</td><td>09:00</td><td>13:15</td><td>160</td><td>$179</td></tr>
+        <tr><td>6</td><td>SM302</td><td>Miami &rarr; Chicago</td><td>Mar 12</td><td>15:30</td><td>19:40</td><td>160</td><td>$169</td></tr>
+        <tr><td>7</td><td>SM401</td><td>Los Angeles &rarr; Seattle</td><td>Mar 13</td><td>06:45</td><td>09:15</td><td>140</td><td>$99</td></tr>
+        <tr><td>8</td><td>SM402</td><td>Seattle &rarr; Los Angeles</td><td>Mar 13</td><td>17:00</td><td>19:30</td><td>140</td><td>$109</td></tr>
+        <tr><td>9</td><td>SM501</td><td>Miami &rarr; Denver</td><td>Mar 14</td><td>10:00</td><td>13:00</td><td>120</td><td>$189</td></tr>
+        <tr><td>10</td><td>SM502</td><td>Denver &rarr; Miami</td><td>Mar 14</td><td>14:30</td><td>20:30</td><td>120</td><td>$199</td></tr>
+        <tr><td>11</td><td>SM601</td><td>Seattle &rarr; Denver</td><td>Mar 15</td><td>08:00</td><td>11:30</td><td>130</td><td>$149</td></tr>
+        <tr><td>12</td><td>SM602</td><td>Denver &rarr; Seattle</td><td>Mar 15</td><td>13:00</td><td>15:00</td><td>130</td><td>$139</td></tr>
+        <tr><td>13</td><td>SM701</td><td>New York &rarr; Miami</td><td>Mar 16</td><td>06:00</td><td>09:15</td><td>180</td><td>$159</td></tr>
+        <tr><td>14</td><td>SM702</td><td>Miami &rarr; New York</td><td>Mar 16</td><td>18:00</td><td>21:15</td><td>180</td><td>$169</td></tr>
+        <tr><td>15</td><td>SM801</td><td>Los Angeles &rarr; Denver</td><td>Mar 17</td><td>11:00</td><td>14:00</td><td>150</td><td>$119</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<div class="footer">
+  <a href="index.html">&larr; Back to Overview</a> &middot; Hackathon Mock APIs
+</div>
+
+</body>
+</html>
