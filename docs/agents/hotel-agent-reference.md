@@ -15,8 +15,8 @@ The API key is set per instance in the deployment. Check `docker-compose.yml` or
 
 ## Base URL
 
-- **Behind gateway:** `http://localhost:8080/<instance>/api/` (e.g. `/hotel-1/api/`, `/hotel-2/api/`)
-- **Standalone:** `http://localhost:8000/api/`
+- **Behind gateway:** `https://hacketon-18march-api.orcaplatform.ai/<instance>/api/` (e.g. `/hotel-1/api/`, `/hotel-2/api/`)
+- **Standalone:** `/api/` on the host/port where that standalone service is running
 
 All endpoint paths below are relative to the base URL.
 

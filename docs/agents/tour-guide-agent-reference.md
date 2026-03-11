@@ -13,8 +13,8 @@ Without a valid key, all API calls return `401`.
 
 ## Base URL
 
-- **Behind gateway:** `http://localhost:8080/<instance>/api/` (e.g. `/tour-guide-1/api/`)
-- **Standalone:** `http://localhost:8000/api/`
+- **Behind gateway:** `https://hacketon-18march-api.orcaplatform.ai/<instance>/api/` (e.g. `/tour-guide-1/api/`)
+- **Standalone:** `/api/` on the host/port where that standalone service is running
 
 ## Typical Workflow
 
