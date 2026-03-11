@@ -31,3 +31,6 @@ dist/
 .env
 .env.local
 .env.*.local
+
+# Local TLS certificates
+gateway/certs/

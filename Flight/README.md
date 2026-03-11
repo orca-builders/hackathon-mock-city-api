@@ -1,6 +1,6 @@
 # SkyMock Air — Flight Reservation Mock API
 
-Simple single-airline flight reservation API designed for LLM / AI-agent consumption, with a React dashboard for humans to monitor bookings.
+Simple single-airline flight reservation API designed for LLM / AI-agent consumption, with a dashboard for humans to monitor bookings.
 
 ## Quick Start
 

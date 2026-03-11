@@ -1,6 +1,6 @@
 # Hotel Reservation Mock API
 
-Simple hotel reservation API designed for LLM / AI-agent consumption, with a React dashboard for humans to monitor bookings.
+Simple hotel reservation API designed for LLM / AI-agent consumption, with a dashboard for humans to monitor bookings.
 
 ## Quick Start
 

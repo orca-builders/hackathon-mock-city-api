@@ -33,11 +33,11 @@
 <div class="container">
 
   <div class="btn-group">
-    <a href="../Resturant/agent.md" download="restaurant-agent-reference.md" class="btn btn-download">
+    <a href="/docs/agents/restaurant-agent-reference.md" download="restaurant-agent-reference.md" class="btn btn-download">
       <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
       Download Agent Reference
     </a>
-    <a href="http://localhost:8080/restaurant-1/" target="_blank" class="btn btn-primary">Open Dashboard</a>
+    <a href="/restaurant-1/?api_key=restaurant-1-key-ghi789" target="_blank" class="btn btn-primary">Open Dashboard</a>
   </div>
 
   <div class="section">
@@ -50,25 +50,11 @@
     <table>
       <thead><tr><th>Instance</th><th>Dashboard</th><th>API</th><th>API Key</th></tr></thead>
       <tbody>
-        <tr><td>Restaurant 1</td><td><a href="http://localhost:8080/restaurant-1/" target="_blank">/restaurant-1/</a></td><td><code>/restaurant-1/api/</code></td><td><code>restaurant-1-key-ghi789</code></td></tr>
-        <tr><td>Restaurant 2</td><td><a href="http://localhost:8080/restaurant-2/" target="_blank">/restaurant-2/</a></td><td><code>/restaurant-2/api/</code></td><td><code>restaurant-2-key-jkl012</code></td></tr>
-        <tr><td>Restaurant 3</td><td><a href="http://localhost:8080/restaurant-3/" target="_blank">/restaurant-3/</a></td><td><code>/restaurant-3/api/</code></td><td><code>restaurant-3-key-mno345</code></td></tr>
+        <tr><td>Restaurant 1</td><td><a href="/restaurant-1/?api_key=restaurant-1-key-ghi789" target="_blank">/restaurant-1/</a></td><td><code>/restaurant-1/api/</code></td><td><code>restaurant-1-key-ghi789</code></td></tr>
+        <tr><td>Restaurant 2</td><td><a href="/restaurant-2/?api_key=restaurant-2-key-jkl012" target="_blank">/restaurant-2/</a></td><td><code>/restaurant-2/api/</code></td><td><code>restaurant-2-key-jkl012</code></td></tr>
+        <tr><td>Restaurant 3</td><td><a href="/restaurant-3/?api_key=restaurant-3-key-mno345" target="_blank">/restaurant-3/</a></td><td><code>/restaurant-3/api/</code></td><td><code>restaurant-3-key-mno345</code></td></tr>
       </tbody>
     </table>
-  </div>
-
-  <div class="section">
-    <h2>Quick Start</h2>
-    <h3>Backend (FastAPI)</h3>
-    <pre>cd Resturant/backend
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-uvicorn main:app --reload --port 8001</pre>
-    <h3>Frontend (React + Vite)</h3>
-    <pre>cd Resturant/frontend
-npm install
-npm run dev</pre>
   </div>
 
   <div class="section">
@@ -151,27 +137,6 @@ npm run dev</pre>
       <span class="path">/api/reservations/{id}</span>
       <div class="desc">Cancel a reservation.</div>
     </div>
-  </div>
-
-  <div class="section">
-    <h2>Tables (Seed Data)</h2>
-    <table>
-      <thead><tr><th>ID</th><th>Table #</th><th>Capacity</th><th>Location</th></tr></thead>
-      <tbody>
-        <tr><td>1</td><td>T1</td><td>2</td><td>indoor</td></tr>
-        <tr><td>2</td><td>T2</td><td>2</td><td>indoor</td></tr>
-        <tr><td>3</td><td>T3</td><td>4</td><td>indoor</td></tr>
-        <tr><td>4</td><td>T4</td><td>4</td><td>indoor</td></tr>
-        <tr><td>5</td><td>T5</td><td>6</td><td>indoor</td></tr>
-        <tr><td>6</td><td>T6</td><td>2</td><td>bar</td></tr>
-        <tr><td>7</td><td>T7</td><td>2</td><td>bar</td></tr>
-        <tr><td>8</td><td>T8</td><td>4</td><td>patio</td></tr>
-        <tr><td>9</td><td>T9</td><td>4</td><td>patio</td></tr>
-        <tr><td>10</td><td>T10</td><td>6</td><td>patio</td></tr>
-        <tr><td>11</td><td>T11</td><td>4</td><td>outdoor</td></tr>
-        <tr><td>12</td><td>T12</td><td>8</td><td>outdoor</td></tr>
-      </tbody>
-    </table>
   </div>
 
 </div>

@@ -1,6 +1,6 @@
 # Hackathon Mock APIs
 
-A collection of mock booking/reservation APIs designed for LLM and AI-agent consumption, each with a React dashboard for human verification.
+A collection of mock booking/reservation APIs designed for LLM and AI-agent consumption, each with a dashboard for human verification.
 
 ## Services
 
@@ -167,4 +167,4 @@ See each service's own `README.md` for specific ports and API details.
        h-1   h-2 r-1 r-2 r-3  ...
 ```
 
-Each container runs FastAPI serving both the API (`/api/*`) and the built React dashboard as static files.
+Each container runs FastAPI serving both the API (`/api/*`) and the built dashboard as static files.

@@ -26,14 +26,7 @@
 
 <div class="hero">
   <h1>Hackathon Mock APIs</h1>
-  <p class="subtitle">A collection of booking &amp; reservation APIs designed for LLM and AI-agent consumption, each with a React dashboard for human verification.</p>
-  <div class="btn-group" style="justify-content:center">
-    <a href="http://localhost:8080" class="btn btn-primary" target="_blank">
-      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-      Open Gateway
-    </a>
-    <a href="#quick-start" class="btn btn-outline">Quick Start</a>
-  </div>
+  <p class="subtitle">A collection of booking &amp; reservation APIs designed for LLM and AI-agent consumption, each with a dashboard for human verification.</p>
 </div>
 
 <div class="container">
@@ -76,48 +69,6 @@
     </div>
   </div>
 
-  <!-- ARCHITECTURE -->
-  <div class="section">
-    <h2>Architecture</h2>
-    <p>All services run behind a single nginx gateway on port <code>8080</code>. Each container runs FastAPI (Python) serving both the REST API and a built React dashboard as static files.</p>
-    <div class="arch-diagram">                         <span class="highlight">:8080</span>
-                      ┌─────────┐
-                      │  nginx  │  gateway
-                      │  proxy  │  (landing page + reverse proxy)
-                      └────┬────┘
-       ┌──────┬───────┬────┴────┬──────┬──────┐
-       │      │       │         │      │      │
-    hotel-N  rest-N  flight  car-rental  tour  museum
-     :8000   :8000   :8000    :8000    :8000  :8000
-
-    Each container:
-    ┌──────────────────────────┐
-    │  FastAPI (Python)        │
-    │  ├── /api/*  REST API    │
-    │  └── /*     React SPA    │
-    │  SQLite (in-memory DB)   │
-    └──────────────────────────┘</div>
-  </div>
-
-  <!-- QUICK START -->
-  <div class="section" id="quick-start">
-    <h2>Quick Start</h2>
-    <h3>Run everything with Docker</h3>
-    <pre>docker compose up --build</pre>
-    <p>Then open <a href="http://localhost:8080" target="_blank">http://localhost:8080</a> to see the gateway landing page with links to all services.</p>
-
-    <h3>Run a single service without Docker</h3>
-    <pre># Backend
-cd Hotel/backend
-python3 -m venv venv &amp;&amp; source venv/bin/activate
-pip install -r requirements.txt
-uvicorn main:app --reload --port 8000
-
-# Frontend (separate terminal)
-cd Hotel/frontend
-npm install &amp;&amp; npm run dev</pre>
-  </div>
-
   <!-- SERVICE INSTANCES -->
   <div class="section">
     <h2>Service Instances</h2>
@@ -143,10 +94,10 @@ npm install &amp;&amp; npm run dev</pre>
     <h2>API Key Authentication</h2>
     <p>Every API endpoint is protected by an API key. Provide it in one of two ways:</p>
     <pre># Header (recommended)
-curl -H "X-API-Key: hotel-1-key-abc123" http://localhost:8080/hotel-1/api/rooms
+curl -H "X-API-Key: hotel-1-key-abc123" https://hacketon-18march-api.orcaplatform.ai/hotel-1/api/rooms
 
 # Query parameter
-curl "http://localhost:8080/hotel-1/api/rooms?api_key=hotel-1-key-abc123"</pre>
+curl "https://hacketon-18march-api.orcaplatform.ai/hotel-1/api/rooms?api_key=hotel-1-key-abc123"</pre>
 
     <h3>Default API Keys</h3>
     <table>
@@ -180,44 +131,7 @@ curl "http://localhost:8080/hotel-1/api/rooms?api_key=hotel-1-key-abc123"</pre>
     </div>
   </div>
 
-  <!-- ADD INSTANCES -->
-  <div class="section">
-    <h2>Adding More Instances</h2>
-    <p>To add a 3rd hotel or 4th restaurant:</p>
-    <h3>1. Add to <code>docker-compose.yml</code></h3>
-    <pre>hotel-3:
-  build:
-    context: ./Hotel
-    args:
-      BASE_PATH: /hotel-3/
-  environment:
-    API_KEY: hotel-3-key-xyz789
-  restart: unless-stopped</pre>
-
-    <h3>2. Add to <code>gateway/nginx.conf</code></h3>
-    <pre>location /hotel-3/ {
-    proxy_pass http://hotel-3:8000/;
-    proxy_set_header Host $host;
-    proxy_set_header X-Real-IP $remote_addr;
-}</pre>
-
-    <h3>3. Add to <code>gateway</code>'s <code>depends_on</code> list, then rebuild</h3>
-    <pre>docker compose up --build</pre>
-  </div>
-
   <!-- TECH STACK -->
-  <div class="section">
-    <h2>Tech Stack</h2>
-    <table>
-      <thead><tr><th>Layer</th><th>Technology</th></tr></thead>
-      <tbody>
-        <tr><td>Backend</td><td>Python, FastAPI, SQLAlchemy, SQLite</td></tr>
-        <tr><td>Frontend</td><td>React 19, Vite</td></tr>
-        <tr><td>Gateway</td><td>nginx (path-based reverse proxy)</td></tr>
-        <tr><td>Containers</td><td>Docker, Docker Compose</td></tr>
-      </tbody>
-    </table>
-  </div>
 
 </div>
 
