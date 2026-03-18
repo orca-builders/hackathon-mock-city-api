@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hackathon Register</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Inter", sans-serif;
+      background: #f8fafc;
+      color: #111827;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 1rem;
+    }
+    .card {
+      width: 100%;
+      max-width: 420px;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 1.25rem;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    }
+    h1 {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    form {
+      display: grid;
+      gap: 0.85rem;
+    }
+    label {
+      display: grid;
+      gap: 0.35rem;
+      font-size: 0.92rem;
+      font-weight: 500;
+    }
+    input, select, button {
+      font: inherit;
+      padding: 0.6rem 0.7rem;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      background: #fff;
+    }
+    button {
+      cursor: pointer;
+      border: 0;
+      background: #111827;
+      color: white;
+      font-weight: 600;
+    }
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    #message {
+      margin-top: 0.9rem;
+      font-size: 0.9rem;
+    }
+    #message.success { color: #166534; }
+    #message.error { color: #b91c1c; }
+  </style>
+</head>
+<body>
+  <section class="card">
+    <h1>Hackathon Register</h1>
+    <form id="register-form">
+      <label>
+        Name
+        <input type="text" name="name" required />
+      </label>
+
+      <label>
+        Email
+        <input type="email" name="email" required />
+      </label>
+
+      <label>
+        Team
+        <select name="team" required>
+          <option value="Team 1">Team 1</option>
+          <option value="Team 2">Team 2</option>
+          <option value="Team 3">Team 3</option>
+          <option value="Team 4">Team 4</option>
+          <option value="Team 5">Team 5</option>
+          <option value="Team 6">Team 6</option>
+        </select>
+      </label>
+
+      <button type="submit" id="submit-btn">Register</button>
+    </form>
+    <p id="message"></p>
+  </section>
+
+  <script>
+    const WEBHOOK_URL = "https://hook.eu1.make.com/gbpmcggtf21u6pfd5q3m4mkeuim49jm3";
+    const form = document.getElementById("register-form");
+    const submitBtn = document.getElementById("submit-btn");
+    const message = document.getElementById("message");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Submitting...";
+      message.textContent = "";
+      message.className = "";
+
+      const formData = new FormData(form);
+      const payload = {
+        name: String(formData.get("name") || "").trim(),
+        email: String(formData.get("email") || "").trim(),
+        team: String(formData.get("team") || "")
+      };
+
+      try {
+        const response = await fetch(WEBHOOK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          throw new Error("Request failed");
+        }
+
+        form.reset();
+        message.textContent = "Registered successfully.";
+        message.className = "success";
+      } catch (error) {
+        message.textContent = "Could not submit. Please try again.";
+        message.className = "error";
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Register";
+      }
+    });
+  </script>
+</body>
+</html>
