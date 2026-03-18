@@ -1,6 +1,6 @@
 # Car Rental Mock API
 
-Simple car rental API designed for LLM / AI-agent consumption, with a React dashboard for humans to monitor the fleet and rentals.
+Simple car rental API designed for LLM / AI-agent consumption, with a dashboard for humans to monitor the fleet and rentals.
 
 ## Quick Start
 

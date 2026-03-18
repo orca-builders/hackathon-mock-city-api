@@ -1,6 +1,6 @@
 # Restaurant Reservation Mock API
 
-Simple restaurant reservation API designed for LLM / AI-agent consumption, with a React dashboard for humans to monitor bookings.
+Simple restaurant reservation API designed for LLM / AI-agent consumption, with a dashboard for humans to monitor bookings.
 
 ## Quick Start
 

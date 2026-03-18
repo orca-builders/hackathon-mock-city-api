@@ -1,6 +1,6 @@
 # Museum Ticket Mock API
 
-Simple museum ticket booking API designed for LLM / AI-agent consumption, with a React dashboard for humans to monitor availability and tickets.
+Simple museum ticket booking API designed for LLM / AI-agent consumption, with a dashboard for humans to monitor availability and tickets.
 
 ## Quick Start
 

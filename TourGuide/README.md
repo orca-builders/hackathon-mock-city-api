@@ -1,6 +1,6 @@
 # Tour Guide Mock API
 
-Simple tour guide booking API designed for LLM / AI-agent consumption, with a React dashboard for humans to monitor tours and bookings.
+Simple tour guide booking API designed for LLM / AI-agent consumption, with a dashboard for humans to monitor tours and bookings.
 
 ## Quick Start
 
