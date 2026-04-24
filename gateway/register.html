@@ -72,8 +72,13 @@
     <h1>Hackathon Register</h1>
     <form id="register-form">
       <label>
-        Name
-        <input type="text" name="name" required />
+        First Name
+        <input type="text" name="first_name" required />
+      </label>
+
+      <label>
+        Last Name
+        <input type="text" name="last_name" required />
       </label>
 
       <label>
@@ -99,7 +104,7 @@
   </section>
 
   <script>
-    const WEBHOOK_URL = "https://hook.eu1.make.com/gbpmcggtf21u6pfd5q3m4mkeuim49jm3";
+    const REGISTER_URL = "/register-api/register";
     const form = document.getElementById("register-form");
     const submitBtn = document.getElementById("submit-btn");
     const message = document.getElementById("message");
@@ -113,27 +118,38 @@
 
       const formData = new FormData(form);
       const payload = {
-        name: String(formData.get("name") || "").trim(),
+        first_name: String(formData.get("first_name") || "").trim(),
+        last_name: String(formData.get("last_name") || "").trim(),
         email: String(formData.get("email") || "").trim(),
         team: String(formData.get("team") || "")
       };
 
       try {
-        const response = await fetch(WEBHOOK_URL, {
+        const response = await fetch(REGISTER_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
         });
 
+        const data = await response.json().catch(() => ({}));
+
+        if (response.status === 409) {
+          message.textContent = data.detail || "This email is already registered.";
+          message.className = "error";
+          return;
+        }
+
         if (!response.ok) {
-          throw new Error("Request failed");
+          const errMsg = data.detail || data.message || "Request failed";
+          throw new Error(errMsg);
         }
 
         form.reset();
-        message.textContent = "Registered successfully.";
+        message.textContent = "Registered successfully. Redirecting...";
         message.className = "success";
+        window.location.href = "https://hacketon-18march.orcapt.com/";
       } catch (error) {
-        message.textContent = "Could not submit. Please try again.";
+        message.textContent = (error.message || "Could not submit. Please try again.").replace(/^Error: /, "");
         message.className = "error";
       } finally {
         submitBtn.disabled = false;

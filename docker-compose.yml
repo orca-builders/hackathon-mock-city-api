@@ -20,6 +20,18 @@ services:
       - car-rental-1
       - tour-guide-1
       - museum-1
+      - registration
+    restart: unless-stopped
+
+  # ── Registration (Orca API) ───────────────────────────────────────────
+
+  registration:
+    build:
+      context: ./Registration
+    environment:
+      ORCA_API_URL: https://hacketon-18march-api.orcapt.com/api/v1/external
+      ORCA_WORKSPACE_TOKEN: b66b024fa24472305b96e939d3df64d92600c655fbe26ad0a2cf438fdfc2d47d
+      ORCA_TENANT: hacketon-18march
     restart: unless-stopped
 
   # ── Hotel (2 instances) ──────────────────────────────────────────────
@@ -31,6 +43,8 @@ services:
         BASE_PATH: /hotel-1/
     environment:
       API_KEY: hotel-1-key-abc123
+    volumes:
+      - hotel-1-db:/app/data
     restart: unless-stopped
 
   hotel-2:
@@ -40,6 +54,8 @@ services:
         BASE_PATH: /hotel-2/
     environment:
       API_KEY: hotel-2-key-def456
+    volumes:
+      - hotel-2-db:/app/data
     restart: unless-stopped
 
   # ── Restaurant (3 instances) ─────────────────────────────────────────
@@ -51,6 +67,8 @@ services:
         BASE_PATH: /restaurant-1/
     environment:
       API_KEY: restaurant-1-key-ghi789
+    volumes:
+      - restaurant-1-db:/app/data
     restart: unless-stopped
 
   restaurant-2:
@@ -60,6 +78,8 @@ services:
         BASE_PATH: /restaurant-2/
     environment:
       API_KEY: restaurant-2-key-jkl012
+    volumes:
+      - restaurant-2-db:/app/data
     restart: unless-stopped
 
   restaurant-3:
@@ -69,6 +89,8 @@ services:
         BASE_PATH: /restaurant-3/
     environment:
       API_KEY: restaurant-3-key-mno345
+    volumes:
+      - restaurant-3-db:/app/data
     restart: unless-stopped
 
   # ── Flight (1 instance) ─────────────────────────────────────────────
@@ -80,6 +102,8 @@ services:
         BASE_PATH: /flight-1/
     environment:
       API_KEY: flight-1-key-pqr678
+    volumes:
+      - flight-1-db:/app/data
     restart: unless-stopped
 
   # ── Car Rental (1 instance) ─────────────────────────────────────────
@@ -91,6 +115,8 @@ services:
         BASE_PATH: /car-rental-1/
     environment:
       API_KEY: car-rental-1-key-stu901
+    volumes:
+      - car-rental-1-db:/app/data
     restart: unless-stopped
 
   # ── Tour Guide (1 instance) ─────────────────────────────────────────
@@ -102,6 +128,8 @@ services:
         BASE_PATH: /tour-guide-1/
     environment:
       API_KEY: tour-guide-1-key-vwx234
+    volumes:
+      - tour-guide-1-db:/app/data
     restart: unless-stopped
 
   # ── Museum (1 instance) ─────────────────────────────────────────────
@@ -113,4 +141,17 @@ services:
         BASE_PATH: /museum-1/
     environment:
       API_KEY: museum-1-key-yza567
+    volumes:
+      - museum-1-db:/app/data
     restart: unless-stopped
+
+volumes:
+  hotel-1-db:
+  hotel-2-db:
+  restaurant-1-db:
+  restaurant-2-db:
+  restaurant-3-db:
+  flight-1-db:
+  car-rental-1-db:
+  tour-guide-1-db:
+  museum-1-db:

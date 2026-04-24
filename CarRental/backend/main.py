@@ -22,7 +22,8 @@ from sqlalchemy.orm import (
 # Database setup
 # ---------------------------------------------------------------------------
 
-DATABASE_URL = "sqlite:///./carrental.db"
+os.makedirs("data", exist_ok=True)
+DATABASE_URL = "sqlite:///./data/carrental.db"
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
 
